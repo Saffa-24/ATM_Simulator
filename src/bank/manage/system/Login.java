@@ -7,9 +7,11 @@ import java.awt.event.ActionEvent;
 
 
 public class Login extends JFrame implements ActionListener {
- JButton Login,Register,Clear;
- JTextField cardtext;
- JPasswordField pintext;
+
+
+JButton Login,Register,Clear;
+JTextField cardtext;
+JPasswordField pintext;
  
 
     Login() {
@@ -71,6 +73,8 @@ public class Login extends JFrame implements ActionListener {
         Register.addActionListener(this);
         add(Register);
 
+
+        
         
         setLocation(350, 200);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

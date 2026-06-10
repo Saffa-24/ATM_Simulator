@@ -12,8 +12,7 @@ public class Transaction extends JFrame implements ActionListener {
 
         setLayout(null);
 
-        ImageIcon i1 = new ImageIcon(
-                "C:/Users/saffa/OneDrive/Downloads/BANKMANAGEMENTSYSTEM/src/ICONS/atm.jpg");
+        ImageIcon i1 = new ImageIcon("C:\\Users\\saffa\\Downloads\\BankManagementSystem\\src\\ICONS\\atm.jpg");
 
         Image i2 = i1.getImage().getScaledInstance(
                 800, 850, Image.SCALE_DEFAULT);
