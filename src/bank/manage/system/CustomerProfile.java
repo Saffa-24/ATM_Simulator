@@ -1,14 +1,12 @@
 package  bank.manage.system;
 
 import javax.swing.*;
-
-
-
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 
-
-public class CustomerProfile extends JFrame
+public class CustomerProfile extends JFrame implements ActionListener
 {
     JLabel  Profile,appNo, App, personalHeading,additionalHeading;
     JLabel nameLabel, fnameLabel, dobLabel;
@@ -18,6 +16,9 @@ public class CustomerProfile extends JFrame
     JLabel occupationLabel, panLabel, aadhaarLabel,seniorLabel;
     JLabel existingLabel;
     JLabel details, type, CardValue, PINValue;
+    JButton continueButton, EditButton;
+    String formno;
+   
 
     public CustomerProfile(String Cardno)
     {
@@ -27,22 +28,36 @@ public class CustomerProfile extends JFrame
         String addressStr = "";
         String fnameStr = "";
         String photoPath = "";
+        String religion = "";
+        String category = "";
+        String education = "";
+        String occupation = "";
+        String pan = "";
+        String aadhaar = "";
+        String senior = "";
+        String accountType = "";
+        String cardNo = "";
+        String Pin="";
 
         setLayout(null);
-        setSize(800,850);
+        setSize(900,700);
+
+         JPanel panel = new JPanel();
+        panel.setLayout(null);
+        panel.setPreferredSize(new Dimension(850, 1400));
         Profile=new JLabel("Profile of the Account Holder");
-        Profile.setBounds(300,25,300,30);
+        Profile.setBounds(300,10,300,30);
         Profile.setFont(new Font("Arial", Font.BOLD, 16));
         Profile.setForeground(Color.BLACK);
 
         personalHeading =
         new JLabel("PERSONAL DETAILS");
 
-        personalHeading.setBounds(100,350,250,30);
+        personalHeading.setBounds(100,75,250,30);
         personalHeading.setFont(
                 new Font("Arial",Font.BOLD,16));
 
-        add(personalHeading);
+        panel.add(personalHeading);
 
         appNo=new JLabel("Application\nNO :");
         appNo.setBounds(100,100,100,30);
@@ -94,17 +109,17 @@ public class CustomerProfile extends JFrame
             String state = result.getString("STATE");
             String pincode = result.getString("PINCODE");
 
-            String religion = result.getString("RELIGION");
-            String category = result.getString("CATEGORY");
-            String education = result.getString("EDUCATION");
-            String occupation = result.getString("OCCUPATION");
-            String pan = result.getString("PAN");
-            String aadhaar = result.getString("AADHAAR");
-            String senior = result.getString("SENIOR_CITIZEN");
+            religion = result.getString("RELIGION");
+            category = result.getString("CATEGORY");
+            education = result.getString("EDUCATION");
+            occupation = result.getString("OCCUPATION");
+            pan = result.getString("PAN");
+            aadhaar = result.getString("AADHAAR");
+            senior = result.getString("SENIOR_CITIZEN");
 
-            String accountType = result.getString("ACCOUNT_TYPE");
-            String cardNo = result.getString("CARDNUMBER");
-
+            accountType = result.getString("ACCOUNT_TYPE");
+            cardNo = result.getString("CARD_NUMBER");
+            Pin=result.getString("PIN_NUMBER");
             result.close();
             con.s.close();
             con.con.close();
@@ -125,7 +140,7 @@ public class CustomerProfile extends JFrame
 
         photoLabel.setBounds(600,80,120,120);
 
-        add(photoLabel);
+        panel.add(photoLabel);
 
 
         App=new JLabel(appStr);
@@ -157,33 +172,175 @@ public class CustomerProfile extends JFrame
          additionalHeading =
         new JLabel("ADDITIONAL DETAILS");
 
-        additionalHeading.setBounds(100,650,250,30);
+        additionalHeading.setBounds(100,350,250,30);
         additionalHeading.setFont(
                 new Font("Arial",Font.BOLD,16));
 
-        add(additionalHeading);
+        panel.add(additionalHeading);
+
+
+        JLabel religionLabel = new JLabel("Religion :");
+        religionLabel.setBounds(100,400,150,30);
+        panel.add(religionLabel);
+
+        JLabel religionValue = new JLabel(religion);
+        religionValue.setBounds(250,400,250,30);
+        panel.add(religionValue);
+
+        JLabel categoryLabel = new JLabel("Category :");
+        categoryLabel.setBounds(100,450,150,30);
+        panel.add(categoryLabel);
+
+        JLabel categoryValue = new JLabel(category);
+        categoryValue.setBounds(250,450,250,30);
+        panel.add(categoryValue);
+
+        JLabel educationLabel = new JLabel("Education :");
+        educationLabel.setBounds(100,500,150,30);
+        panel.add(educationLabel);
+
+        JLabel educationValue = new JLabel(education);
+        educationValue.setBounds(250,500,250,30);
+        panel.add(educationValue);
+
+        JLabel occupationLabel = new JLabel("Occupation :");
+        occupationLabel.setBounds(100,550,150,30);
+        panel.add(occupationLabel);
+
+        JLabel occupationValue = new JLabel(occupation);
+        occupationValue.setBounds(250,550,250,30);
+        panel.add(occupationValue);
+
+        JLabel panLabel = new JLabel("PAN Number :");
+        panLabel.setBounds(100,600,150,30);
+        panel.add(panLabel);
+
+        JLabel panValue = new JLabel(pan);
+        panValue.setBounds(250,600,250,30);
+        panel.add(panValue);
+
+        JLabel aadhaarLabel = new JLabel("Aadhaar Number :");
+        aadhaarLabel.setBounds(100,650,150,30);
+        panel.add(aadhaarLabel);
+
+        JLabel aadhaarValue = new JLabel(aadhaar);
+        aadhaarValue.setBounds(250,650,250,30);
+        panel.add(aadhaarValue);
+
+        JLabel seniorLabel = new JLabel("Senior Citizen :");
+        seniorLabel.setBounds(100,700,150,30);
+        panel.add(seniorLabel);
+
+        JLabel seniorValue = new JLabel(senior);
+        seniorValue.setBounds(250,700,250,30);
+        panel.add(seniorValue);
+
+        JLabel existingLabel = new JLabel("Existing Account :");
+        existingLabel.setBounds(100,750,150,30);
+        panel.add(existingLabel);
+
+        JLabel existingValue = new JLabel(accountType);
+        existingValue.setBounds(250,750,250,30);
+        panel.add(existingValue);
+
+        JLabel accountHeading =
+        new JLabel("ACCOUNT DETAILS");
+
+        accountHeading.setBounds(100,850,250,30);
+        accountHeading.setFont(
+                new Font("Arial",Font.BOLD,16));
+        panel.add(accountHeading);
+        JLabel accountTypeLabel = new JLabel("Account Type :");
+        accountTypeLabel.setBounds(100,900,150,30);
+        panel.add(accountTypeLabel);
+
+        JLabel accountTypeValue = new JLabel(accountType);
+        accountTypeValue.setBounds(250,900,250,30);
+        panel.add(accountTypeValue);
+
+        JLabel cardLabel = new JLabel("Card Number :");
+        cardLabel.setBounds(100,950,150,30);
+        panel.add(cardLabel);
+
+        JLabel cardValue = new JLabel(cardNo);
+        cardValue.setBounds(250,950,300,30);
+        panel.add(cardValue);
+
+        JLabel pinLabel = new JLabel("PIN :");
+        pinLabel.setBounds(100,1000,150,30);
+        panel.add(pinLabel);
+
+        JLabel pinValue = new JLabel(Pin);
+        pinValue.setBounds(250,1000,250,30);
+        panel.add(pinValue);
+
+        JButton continueButton = new JButton("CONTINUE TO ATM");
+        continueButton.setBounds(250,1100,200,40);
+        continueButton.addActionListener(this);
+        panel.add(continueButton);
+
+         JButton editButton = new JButton("EDIT PROFILE");
+        editButton.setBounds(500,1100,150,40);
+
+        editButton.addActionListener(e -> {
+           
+            dispose();
+        });
+
+        panel.add(editButton);
 
 
 
+         panel.add(name);
+         panel.add(fname);
+         panel.add(address);
+         panel.add(dob);
+         panel.add(App);
+         panel.add(fnameLabel);
+         panel.add(nameLabel);
+         panel.add(addressLabel);
+         panel.add(dobLabel);
+         panel.add(Profile);
+         panel.add(appNo);
+        
+       
 
-        add(name);
-        add(fname);
-        add(address);
-        add(dob);
-        add(App);
-        add(fnameLabel);
-        add(nameLabel);
-        add(addressLabel);
-        add(dobLabel);
-        add(Profile);
-        add(appNo);
+         JScrollPane scrollPane = new JScrollPane(panel);
+
+        scrollPane.setVerticalScrollBarPolicy(
+                JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+
+        setContentPane(scrollPane);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);
         
     }
-    public static void main(String[]args)
+    public  void actionPerformed(ActionEvent ae )
     {
-        new CustomerProfile("504093172002918975");
+        if(ae.getSource()==continueButton)
+
+        try{
+            new Transaction();
+            dispose();
+        }
+          catch (Exception e)
+        {
+            JOptionPane.showMessageDialog(this,e);
+        }
+      
+        else if(ae.getSource()==EditButton)
+        {
+            try{
+            new EditProfile(formno);
+            dispose();
+        }
+          catch (Exception e)
+        {
+            JOptionPane.showMessageDialog(this,e);
+        }
+      
+
+        }
     }
 }
