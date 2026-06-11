@@ -5,6 +5,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Random;
 import com.toedter.calendar.JDateChooser;
+import java.nio.file.*;
+import java.io.File;
+
 
 
 public class SignUp extends JFrame implements ActionListener {
@@ -18,7 +21,10 @@ public class SignUp extends JFrame implements ActionListener {
     JTextField emailField, addressField;
     JTextField pincodeField, stateField;
     JDateChooser dateChooser;
+    JButton uploadPhoto;
+    JLabel photoLabel;
     String formno;
+    String photoPath = "";
 
     JRadioButton male, female;
     JRadioButton married, unmarried, other;
@@ -170,7 +176,51 @@ public class SignUp extends JFrame implements ActionListener {
 
         getContentPane().setBackground(Color.WHITE);
 
-        setSize(700, 750);
+        photoLabel = new JLabel();
+
+        photoLabel.setBounds(550,150,150,150);
+
+        photoLabel.setBorder(
+        BorderFactory.createLineBorder(Color.BLACK));
+
+        add(photoLabel);
+
+        uploadPhoto = new JButton("Upload Photo");
+
+        uploadPhoto.setBounds(550,320,150,30);
+
+        add(uploadPhoto);
+
+        uploadPhoto.addActionListener(e -> {
+
+            JFileChooser chooser =
+                    new JFileChooser();
+
+            int result =
+                    chooser.showOpenDialog(null);
+
+            if(result == JFileChooser.APPROVE_OPTION) {
+
+                photoPath =chooser.getSelectedFile()
+                                .getAbsolutePath();
+                ImageIcon icon =
+                        new ImageIcon(photoPath);
+
+                Image image =
+                        icon.getImage()
+                            .getScaledInstance(
+                                    150,
+                                    150,
+                                    Image.SCALE_SMOOTH);
+
+                photoLabel.setIcon(
+                        new ImageIcon(image));
+            }
+        });
+
+
+
+        setSize(800, 850);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
@@ -225,13 +275,13 @@ public class SignUp extends JFrame implements ActionListener {
                     "MARITAL_STATUS VARCHAR(20)," +
                     "ADDRESS VARCHAR(200)," +
                     "STATE VARCHAR(50)," +
-                    "PINCODE VARCHAR(20)" +
+                    "PINCODE VARCHAR(20)" +"PHOTO_PATH,"+
                     ")";
                     con.s.executeUpdate(createTable);
 
                     String query =
                     "INSERT INTO SIGNUP " +
-                    "(FORMNO, NAME, FNAME, DOB, GENDER, EMAIL, MARITAL_STATUS, ADDRESS, STATE, PINCODE) " +
+                    "(FORMNO, NAME, FNAME, DOB, GENDER, EMAIL, MARITAL_STATUS, ADDRESS, STATE, PINCODE,PHOTO_PATH) " +
                     "VALUES('" + formno + "','" +
                     name + "','" +
                     fname + "','" +
@@ -241,7 +291,7 @@ public class SignUp extends JFrame implements ActionListener {
                     status + "','" +
                     address + "','" +
                     state + "','" +
-                    pincode + "')";
+                    pincode + "','"+photoPath+"')";
                     con.s.executeUpdate(query);
 
                     JOptionPane.showMessageDialog( this, "Application submitted successfully");
