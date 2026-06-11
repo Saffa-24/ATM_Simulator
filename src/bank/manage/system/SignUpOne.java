@@ -2,10 +2,7 @@ package bank.manage.system;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
+//import java.util.Random;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
@@ -17,8 +14,6 @@ public class SignUpOne extends JFrame implements ActionListener {
     JLabel occupationLabel, panLabel, aadhaarLabel,seniorLabel;
     JLabel existingLabel;
     JRadioButton existingYes, existingNo;
-    JButton uploadPhoto;
-    JLabel photoLabel;
 
     JRadioButton seniorYes,seniorNo;
     JComboBox<String> religionBox;
@@ -195,53 +190,6 @@ public class SignUpOne extends JFrame implements ActionListener {
         nextButton.addActionListener(this);
         add(nextButton);
 
-
-        photoLabel = new JLabel();
-
-        photoLabel.setBounds(550,150,150,150);
-
-        photoLabel.setBorder(
-                BorderFactory.createLineBorder(Color.BLACK));
-
-        add(photoLabel);
-
-        uploadPhoto = new JButton("Upload Photo");
-
-        uploadPhoto.setBounds(550,320,150,30);
-
-        add(uploadPhoto);
-
-
-        uploadPhoto.addActionListener(e -> {
-
-    JFileChooser chooser =
-            new JFileChooser();
-
-    int result =
-            chooser.showOpenDialog(null);
-
-    if(result == JFileChooser.APPROVE_OPTION) {
-
-        String path =
-                chooser.getSelectedFile()
-                       .getAbsolutePath();
-
-        ImageIcon icon =
-                new ImageIcon(path);
-
-        Image image =
-                icon.getImage()
-                    .getScaledInstance(
-                            150,
-                            150,
-                            Image.SCALE_SMOOTH);
-
-        photoLabel.setIcon(
-                new ImageIcon(image));
-    }
-});
-
-
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);
@@ -329,5 +277,6 @@ public class SignUpOne extends JFrame implements ActionListener {
         
         setVisible(false);
         new SignUpTwo(formno);
+        dispose();
     }
 }

@@ -18,9 +18,27 @@ public class DBConnection {
 
             System.out.println("Database Connected");
 
+            String createTable =
+                    "CREATE TABLE IF NOT EXISTS SIGNUP (" +
+                    "FORMNO VARCHAR(20) PRIMARY KEY," +
+                    "NAME VARCHAR(100)," +
+                    "FNAME VARCHAR(100)," +
+                    "DOB VARCHAR(50)," +
+                    "GENDER VARCHAR(20)," +
+                    "EMAIL VARCHAR(100)," +
+                    "MARITAL_STATUS VARCHAR(20)," +
+                    "ADDRESS VARCHAR(200)," +
+                    "STATE VARCHAR(50)," +
+                    "PINCODE VARCHAR(20)," +
+                    "PHOTO_PATH VARCHAR(500)" +
+                    ")";
+            
+            s.executeUpdate(createTable);
+
         } catch(Exception e) {
 
             e.printStackTrace();
         }
+
     }
 }

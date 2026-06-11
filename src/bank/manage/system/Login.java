@@ -92,6 +92,7 @@ JPasswordField pintext;
         else if(ae.getSource()==Register)
         {
             new SignUp();
+            dispose();
         }
         else if(ae.getSource()==Login)
         {
@@ -110,7 +111,11 @@ JPasswordField pintext;
                 if(rs.next())
                 {
                     JOptionPane.showMessageDialog(this,"Login Successfully");
-                    new Transaction();
+                    new CustomerProfile(Cardno);
+                    dispose();
+                    rs.close();
+                    con.s.close();
+                    con.con.close();
     
                 }
                 else

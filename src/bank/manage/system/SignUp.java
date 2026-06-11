@@ -263,22 +263,8 @@ public class SignUp extends JFrame implements ActionListener {
             }
             else 
             {
-                    DBConnection con = new DBConnection();
-                    String createTable =
-                    "CREATE TABLE IF NOT EXISTS SIGNUP (" +
-                    "FORMNO VARCHAR(20) PRIMARY KEY," +
-                    "NAME VARCHAR(100)," +
-                    "FNAME VARCHAR(100)," +
-                    "DOB VARCHAR(50)," +
-                    "GENDER VARCHAR(20)," +
-                    "EMAIL VARCHAR(100)," +
-                    "MARITAL_STATUS VARCHAR(20)," +
-                    "ADDRESS VARCHAR(200)," +
-                    "STATE VARCHAR(50)," +
-                    "PINCODE VARCHAR(20)" +"PHOTO_PATH,"+
-                    ")";
-                    con.s.executeUpdate(createTable);
-
+                DBConnection con=new DBConnection();
+                    
                     String query =
                     "INSERT INTO SIGNUP " +
                     "(FORMNO, NAME, FNAME, DOB, GENDER, EMAIL, MARITAL_STATUS, ADDRESS, STATE, PINCODE,PHOTO_PATH) " +
@@ -289,19 +275,21 @@ public class SignUp extends JFrame implements ActionListener {
                     gender + "','" +
                     email + "','" +
                     status + "','" +
-                    address + "','" +
+                    address + "','"+
                     state + "','" +
                     pincode + "','"+photoPath+"')";
+                    System.out.println(query);
                     con.s.executeUpdate(query);
 
                     JOptionPane.showMessageDialog( this, "Application submitted successfully");
                     new SignUpOne(formno);
+                    dispose();
             }
            
             
         } catch (Exception e) {
-            System.out.println(e);
-        }
+    e.printStackTrace();
+}
     }
         
    /*  public static void main(String[] args) {

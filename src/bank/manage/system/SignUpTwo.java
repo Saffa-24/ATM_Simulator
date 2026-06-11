@@ -208,7 +208,8 @@ try {
         } else {
             JOptionPane.showMessageDialog(this, "Selected account type: " + accountType, "Account Type", JOptionPane.INFORMATION_MESSAGE);
             new Transaction();
-        }
+            dispose();
+                }
 
     }
 }
