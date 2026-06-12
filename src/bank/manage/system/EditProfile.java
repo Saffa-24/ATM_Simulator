@@ -24,10 +24,10 @@ public class EditProfile extends JFrame implements ActionListener {
 
     JButton uploadButton,saveButton;
 
-        JTextField accountTypeField;
+        JComboBox<String> accountTypeField;
 
     JLabel photoLabel;
-
+    String Cardno;
     String formno;
     String photoPath="";
 
@@ -115,6 +115,20 @@ public class EditProfile extends JFrame implements ActionListener {
         photoLabel.setBounds(600,100,150,150);
         panel.add(photoLabel);
         
+
+        JLabel accountType=new JLabel("Account Type");
+        accountType.setBounds(100,400,150,30);
+        panel.add(accountType);
+
+        accountTypeField=new JComboBox<>(new String[]{
+                "Savings",
+                "Current",
+                "Fixed Deposit",
+                "Recurring Deposit"
+        });
+        accountTypeField.setBounds(250,400,250,30);
+        panel.add(accountTypeField);
+
         JLabel religion=new JLabel("Religion");
         religion.setBounds(100,600,250,30);
         panel.add(religion);
@@ -191,6 +205,7 @@ public class EditProfile extends JFrame implements ActionListener {
         aadhaarField = new JTextField();
 
 
+
         religionField.setBounds(250,600,250,30);
         categoryField.setBounds(250,650,250,30);
         educationField.setBounds(250,700,250,30);
@@ -259,7 +274,7 @@ public class EditProfile extends JFrame implements ActionListener {
                 addressField.setText(rs.getString("ADDRESS"));
                 stateField.setText(rs.getString("STATE"));
                 pincodeField.setText(rs.getString("PINCODE"));
-
+                accountTypeField.setSelectedItem(rs.getString("ACCOUNT_TYPE"));
                 religionField.setSelectedItem(
                         rs.getString("RELIGION"));
 
@@ -285,6 +300,7 @@ public class EditProfile extends JFrame implements ActionListener {
                         rs.getString("EXISTING_ACCOUNT"));
 
                 photoPath = rs.getString("PHOTO_PATH");
+                Cardno=rs.getString("CARD_NUMBER");
 
                 ImageIcon icon = new ImageIcon(photoPath);
                 Image img = icon.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
@@ -332,7 +348,13 @@ public class EditProfile extends JFrame implements ActionListener {
 
         con.s.executeUpdate(query1);
 
-        // ADDITIONAL_DETAILS TABLE
+        System.out.println(
+        "Account Type = " +
+        accountTypeField.getSelectedItem());
+
+        System.out.println(
+        "Existing Account = " +
+        existingAccountField.getSelectedItem());
 
         String religion =
                 (String) religionField.getSelectedItem();
@@ -366,11 +388,13 @@ public class EditProfile extends JFrame implements ActionListener {
 
         con.s.executeUpdate(query2);
 
-        // ACCOUNT_DETAILS TABLE
+        String accountType =
+        (String) accountTypeField.getSelectedItem();
         String query3 =
+        
         "UPDATE ACCOUNT_DETAILS SET " +
         "ACCOUNT_TYPE='" +
-        accountTypeField.getText() + "' " +
+        accountType + "' " +
         "WHERE FORMNO='" + formno + "'";
 
         con.s.executeUpdate(query3);
@@ -380,21 +404,16 @@ public class EditProfile extends JFrame implements ActionListener {
         JOptionPane.showMessageDialog(
                 this,
                 "Profile Updated Successfully");
+               new CustomerProfile(Cardno);
+               dispose();
        
 
     } catch (Exception e) {
 
         e.printStackTrace();
 
-        JOptionPane.showMessageDialog(
-                this,
-                "Error while saving profile");
+         JOptionPane.showMessageDialog(
+                this,e);
     }
                 }}
-        
-        public static void main(String [] args)
-        {
-                new EditProfile("7178");
-        }
 }
-

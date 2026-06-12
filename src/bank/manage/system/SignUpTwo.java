@@ -207,7 +207,7 @@ try {
             JOptionPane.showMessageDialog(this, "Please select an account type.", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
             JOptionPane.showMessageDialog(this, "Selected account type: " + accountType, "Account Type", JOptionPane.INFORMATION_MESSAGE);
-            new Transaction();
+            new CustomerProfile(Cardno);
             dispose();
                 }
 

@@ -7,8 +7,14 @@ public class Transaction extends JFrame implements ActionListener {
 
     JButton Deposit,FastCash,PinChange,Withdrawl,MiniStmt,Balance,Exit;
     JLabel enter;
+    String cardno;
 
     public Transaction() {
+        this("");
+    }
+
+    public Transaction(String Card_no) {
+        this.cardno = Card_no;
 
         setLayout(null);
 
@@ -88,6 +94,8 @@ public class Transaction extends JFrame implements ActionListener {
         if(ae.getSource()==Deposit)
         {
             JOptionPane.showMessageDialog(this, "Deposit page will come soon ");
+            new Deposit(cardno);
+            dispose();
         }
         else if(ae.getSource()==Withdrawl)
         {

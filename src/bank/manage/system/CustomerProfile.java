@@ -18,10 +18,12 @@ public class CustomerProfile extends JFrame implements ActionListener
     JLabel details, type, CardValue, PINValue;
     JButton continueButton, EditButton;
     String formno;
+    String cardno;
    
 
     public CustomerProfile(String Cardno)
     {
+        cardno = Cardno;
         String appStr = "";
         String nameStr = "";
         String dobStr = "";
@@ -35,6 +37,7 @@ public class CustomerProfile extends JFrame implements ActionListener
         String pan = "";
         String aadhaar = "";
         String senior = "";
+        String Exist="";
         String accountType = "";
         String cardNo = "";
         String Pin="";
@@ -98,7 +101,7 @@ public class CustomerProfile extends JFrame implements ActionListener
         if(result.next())
 
         {
-            appStr=result.getString("FORMNO");
+            formno = result.getString("FORMNO");
             nameStr= result.getString("NAME");
             dobStr=result.getString("DOB");
             addressStr=result.getString("ADDRESS");
@@ -116,6 +119,7 @@ public class CustomerProfile extends JFrame implements ActionListener
             pan = result.getString("PAN");
             aadhaar = result.getString("AADHAAR");
             senior = result.getString("SENIOR_CITIZEN");
+            Exist = result.getString("EXISTING_ACCOUNT");
 
             accountType = result.getString("ACCOUNT_TYPE");
             cardNo = result.getString("CARD_NUMBER");
@@ -143,7 +147,7 @@ public class CustomerProfile extends JFrame implements ActionListener
         panel.add(photoLabel);
 
 
-        App=new JLabel(appStr);
+        App=new JLabel(formno);
         App.setBounds(200,100,100,30);
         App.setFont(new Font("Arial", Font.PLAIN, 14));
         App.setForeground(Color.BLACK);
@@ -239,7 +243,7 @@ public class CustomerProfile extends JFrame implements ActionListener
         existingLabel.setBounds(100,750,150,30);
         panel.add(existingLabel);
 
-        JLabel existingValue = new JLabel(accountType);
+        JLabel existingValue = new JLabel(Exist);
         existingValue.setBounds(250,750,250,30);
         panel.add(existingValue);
 
@@ -274,20 +278,15 @@ public class CustomerProfile extends JFrame implements ActionListener
         pinValue.setBounds(250,1000,250,30);
         panel.add(pinValue);
 
-        JButton continueButton = new JButton("CONTINUE TO ATM");
+        continueButton = new JButton("CONTINUE TO ATM");
         continueButton.setBounds(250,1100,200,40);
         continueButton.addActionListener(this);
         panel.add(continueButton);
 
-         JButton editButton = new JButton("EDIT PROFILE");
-        editButton.setBounds(500,1100,150,40);
-
-        editButton.addActionListener(e -> {
-           
-            dispose();
-        });
-
-        panel.add(editButton);
+        EditButton = new JButton("EDIT PROFILE");
+        EditButton.setBounds(500,1100,150,40);
+        EditButton.addActionListener(this);
+        panel.add(EditButton);
 
 
 
@@ -309,6 +308,7 @@ public class CustomerProfile extends JFrame implements ActionListener
 
         scrollPane.setVerticalScrollBarPolicy(
                 JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        
 
         setContentPane(scrollPane);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -321,7 +321,7 @@ public class CustomerProfile extends JFrame implements ActionListener
         if(ae.getSource()==continueButton)
 
         try{
-            new Transaction();
+            new Transaction(cardno);
             dispose();
         }
           catch (Exception e)

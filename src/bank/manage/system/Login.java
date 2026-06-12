@@ -98,6 +98,7 @@ JPasswordField pintext;
         {
             String Cardno=cardtext.getText();
             String Pin=new String(pintext.getPassword());
+           
             try{
                 DBConnection con =new DBConnection();
                 
@@ -107,6 +108,7 @@ JPasswordField pintext;
                         "' AND PIN_NUMBER='" +
                         Pin +
                         "'";
+
                 java.sql.ResultSet rs= con.s.executeQuery(query);
                 if(rs.next())
                 {
