@@ -24,7 +24,6 @@ public class CustomerProfile extends JFrame implements ActionListener
     public CustomerProfile(String Cardno)
     {
         cardno = Cardno;
-        String appStr = "";
         String nameStr = "";
         String dobStr = "";
         String addressStr = "";
@@ -107,10 +106,7 @@ public class CustomerProfile extends JFrame implements ActionListener
             addressStr=result.getString("ADDRESS");
             fnameStr=result.getString("FNAME");
             photoPath = result.getString("PHOTO_PATH");
-            String gender = result.getString("GENDER");
-            String email = result.getString("EMAIL");
-            String state = result.getString("STATE");
-            String pincode = result.getString("PINCODE");
+           
 
             religion = result.getString("RELIGION");
             category = result.getString("CATEGORY");

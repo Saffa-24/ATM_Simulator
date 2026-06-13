@@ -248,7 +248,7 @@ public class SignUpOne extends JFrame implements ActionListener {
             ")";
 
         try {
-            con.s.executeUpdate(createTable);
+            con.s.execute(createTable);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -266,7 +266,7 @@ public class SignUpOne extends JFrame implements ActionListener {
         existingAccount + "')";
         
         try {
-            con.s.executeUpdate(query);
+            con.s.execute(query);
         } catch (SQLException e) {
             e.printStackTrace();
         }

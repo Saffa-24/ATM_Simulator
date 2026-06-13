@@ -1,19 +1,17 @@
 package bank.manage.system;
-
 import java.awt.*;
 
 import javax.swing.*;
 
 import java.awt.event.*;
 
-public class Deposit extends JFrame implements ActionListener {
+public class FastCash extends JFrame implements ActionListener {
     JLabel EnterLabel;
-    JTextField Amount;
-    JButton Deposit,Back;
+    JButton one,five,ten,twenty,Withdrawl,Back;
     int amt=0;
     String card_no;
 
-    public Deposit(String Card_no)
+    public FastCash(String Card_no)
     {
         this.card_no = Card_no;
         setSize(800,850);
@@ -34,14 +32,32 @@ public class Deposit extends JFrame implements ActionListener {
         EnterLabel.setForeground(Color.WHITE);
         label.add(EnterLabel);
 
-        Amount=new JTextField();
-        Amount.setBounds(200,350,200,30);
-        label.add(Amount);
+        one =new JButton("1000");
+        one.setBounds(150,300,100,30);
+        one.addActionListener(this);
+        label.add(one);
 
-        Deposit=new JButton("Deposit");
-        Deposit.setBounds(150,450,100,30);
-        Deposit.addActionListener(this);
-        label.add(Deposit);
+        five =new JButton("5000");
+        five.setBounds(300,300,100,30);
+        five.addActionListener(this);
+        label.add(five);
+
+        ten =new JButton("10000");
+        ten.setBounds(150,350,100,30);
+        ten.addActionListener(this);
+        label.add(ten);
+
+        twenty =new JButton("20000");
+        twenty.setBounds(300,350,100,30);
+        twenty.addActionListener(this);
+        label.add(twenty);
+
+        
+
+        Withdrawl=new JButton("Withdrawl");
+        Withdrawl.setBounds(150,450,100,30);
+        Withdrawl.addActionListener(this);
+        label.add(Withdrawl);
 
         Back=new JButton("Back");
         Back.setBounds(350,450,100,30);
@@ -53,11 +69,25 @@ public class Deposit extends JFrame implements ActionListener {
         setVisible(true);
         setLocationRelativeTo(null);
     }
+
+    @Override
     public void actionPerformed(ActionEvent ae){
-        if(ae.getSource()==Deposit)
-        {
+        Object src = ae.getSource();
+        if(src==one){
+            amt = 1000;
+            
+        } else if(src==five){
+            amt = 5000;
+            //JOptionPane.showMessageDialog(this, "Withdrawn: " + amt);
+        } else if(src==ten){
+            amt = 10000;
+           // JOptionPane.showMessageDialog(this, "Withdrawn: " + amt);
+        } else if(src==twenty){
+            amt = 20000;
+            //JOptionPane.showMessageDialog(this, "Withdrawn: " + amt);
+        } else if(src==Withdrawl){  
             try{
-               amt = Integer.parseInt(Amount.getText());
+               
                DBConnection con=new DBConnection();
                  String createTable =
                         "CREATE TABLE IF NOT EXISTS TRANSACTIONS (" +
@@ -73,22 +103,24 @@ public class Deposit extends JFrame implements ActionListener {
                     "INSERT INTO TRANSACTIONS " +
                     "(CARD_NUMBER,USE_TYPE,AMOUNT,DATE_TIME) " +
                     "VALUES('" +
-                    card_no + "','Deposit'," +
-                    amt + ",datetime('now'))";
-                    JOptionPane.showMessageDialog(this, "The "+amt+" is deposited");
-
-                con.s.executeUpdate(query);
-                 new Transaction(card_no);
-                dispose();
-            } catch(Exception e) {
-                e.printStackTrace();
-                JOptionPane.showMessageDialog(this ,e);
-            }
+                    card_no + "','Withdraw'," +
+                    amt+ ",datetime('now'))";
+                    con.s.executeUpdate(query);
+                    JOptionPane.showMessageDialog(this, "Withdrawn: " + amt);
+                    new Transaction(card_no);
+                    dispose();
         }
-        else if (ae.getSource()==Back)
-         {
-            new Transaction(card_no);
+        catch(Exception e)
+        {
+            JOptionPane.showMessageDialog(this, e);
+        }
+
+    }
+        else if(src==Back){
+            // go back to Transaction screen if available
+            try{ new Transaction(card_no); } catch(Exception e){}
             dispose();
         }
     }
 }
+   

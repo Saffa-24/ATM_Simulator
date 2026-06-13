@@ -1,19 +1,18 @@
 package bank.manage.system;
-
 import java.awt.*;
 
 import javax.swing.*;
 
 import java.awt.event.*;
 
-public class Deposit extends JFrame implements ActionListener {
+public class Withdrawl extends JFrame implements ActionListener {
     JLabel EnterLabel;
     JTextField Amount;
-    JButton Deposit,Back;
+    JButton Withdrawl,Back;
     int amt=0;
     String card_no;
 
-    public Deposit(String Card_no)
+    public Withdrawl(String Card_no)
     {
         this.card_no = Card_no;
         setSize(800,850);
@@ -38,10 +37,10 @@ public class Deposit extends JFrame implements ActionListener {
         Amount.setBounds(200,350,200,30);
         label.add(Amount);
 
-        Deposit=new JButton("Deposit");
-        Deposit.setBounds(150,450,100,30);
-        Deposit.addActionListener(this);
-        label.add(Deposit);
+        Withdrawl=new JButton("Withdrawl");
+        Withdrawl.setBounds(150,450,100,30);
+        Withdrawl.addActionListener(this);
+        label.add(Withdrawl);
 
         Back=new JButton("Back");
         Back.setBounds(350,450,100,30);
@@ -54,7 +53,7 @@ public class Deposit extends JFrame implements ActionListener {
         setLocationRelativeTo(null);
     }
     public void actionPerformed(ActionEvent ae){
-        if(ae.getSource()==Deposit)
+        if(ae.getSource()==Withdrawl)
         {
             try{
                amt = Integer.parseInt(Amount.getText());
@@ -73,9 +72,9 @@ public class Deposit extends JFrame implements ActionListener {
                     "INSERT INTO TRANSACTIONS " +
                     "(CARD_NUMBER,USE_TYPE,AMOUNT,DATE_TIME) " +
                     "VALUES('" +
-                    card_no + "','Deposit'," +
+                    card_no + "','Withdraw'," +
                     amt + ",datetime('now'))";
-                    JOptionPane.showMessageDialog(this, "The "+amt+" is deposited");
+                    JOptionPane.showMessageDialog(this, "The "+amt+" is withdrawed");
 
                 con.s.executeUpdate(query);
                  new Transaction(card_no);
@@ -92,3 +91,6 @@ public class Deposit extends JFrame implements ActionListener {
         }
     }
 }
+
+    
+

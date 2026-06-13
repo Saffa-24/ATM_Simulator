@@ -3,18 +3,16 @@ package bank.manage.system;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.sql.ResultSet;
 public class Transaction extends JFrame implements ActionListener {
 
     JButton Deposit,FastCash,PinChange,Withdrawl,MiniStmt,Balance,Exit;
     JLabel enter;
     String cardno;
 
-    public Transaction() {
-        this("");
-    }
 
-    public Transaction(String Card_no) {
-        this.cardno = Card_no;
+    public Transaction(String cardno) {
+        this.cardno = cardno;
 
         setLayout(null);
 
@@ -81,7 +79,7 @@ public class Transaction extends JFrame implements ActionListener {
         add(Deposit);
         add(label);
        
-
+        setTitle("ATM Simulator");
         setSize(800, 850);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -93,28 +91,38 @@ public class Transaction extends JFrame implements ActionListener {
     {
         if(ae.getSource()==Deposit)
         {
-            JOptionPane.showMessageDialog(this, "Deposit page will come soon ");
+            JOptionPane.showMessageDialog(this, "Deposit page will appear soon ");
             new Deposit(cardno);
             dispose();
         }
         else if(ae.getSource()==Withdrawl)
         {
-            JOptionPane.showMessageDialog(this, "Withdrawl page will come soon "); 
+            JOptionPane.showMessageDialog(this, "Withdrawl page will appear soon "); 
+            new Withdrawl(cardno);
+            dispose();
+
         }
         else if(ae.getSource()==FastCash)
         {
-            JOptionPane.showMessageDialog(this, " FatCash page will come soon ");
+            JOptionPane.showMessageDialog(this, " FastCash page will come soon ");
+            new FastCash(cardno);
+            dispose();
+
         }
-        else if(ae.getSource()==Balance)
-        {
-            JOptionPane.showMessageDialog(this, "Balance Enquiry page will come soon ");
+        else if(ae.getSource()==Balance){
+            new Balance(cardno);
+            dispose();
         }
+        
+    
         else if(ae.getSource()==PinChange)
         {
             JOptionPane.showMessageDialog(this, "PIN Change page will come soon ");
         }
         else if(ae.getSource()==MiniStmt)
         {
+            new Statement(cardno);
+            dispose();
             JOptionPane.showMessageDialog(this, "Statement page will come soon ");
         }
         else if(ae.getSource()==Exit)
@@ -123,7 +131,4 @@ public class Transaction extends JFrame implements ActionListener {
         }
 
     }
-    public static void main(String[] args) {
-    new Transaction();
-}
 }

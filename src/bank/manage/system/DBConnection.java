@@ -5,7 +5,7 @@ import java.sql.*;
 public class DBConnection {
 
     public Connection con;
-    public Statement s;
+    public java.sql.Statement s;
 
     public DBConnection() {
 
