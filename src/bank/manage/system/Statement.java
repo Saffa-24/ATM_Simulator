@@ -4,12 +4,16 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.ResultSet;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
 
 public class Statement extends JFrame implements ActionListener {
 
     String cardno;
     JTextArea statement;
     JButton back;
+    JButton pdfBtn;
 
     public Statement(String cardno) {
 
@@ -28,6 +32,10 @@ public class Statement extends JFrame implements ActionListener {
 
         statement = new JTextArea();
         statement.setEditable(false);
+        pdfBtn = new JButton("Download PDF");
+        pdfBtn.setBounds(310, 500, 140, 30);
+        pdfBtn.addActionListener(this);
+        add(pdfBtn);
 
         JScrollPane scrollPane = new JScrollPane(statement);
         scrollPane.setBounds(30, 70, 420, 400);
@@ -79,11 +87,52 @@ public class Statement extends JFrame implements ActionListener {
     }
 
     @Override
-    public void actionPerformed(ActionEvent ae) {
+public void actionPerformed(ActionEvent ae) {
 
-        if (ae.getSource() == back) {
-            new Transaction(cardno);
-            dispose();
-        }
+    if(ae.getSource() == back) {
+
+        new Transaction(cardno);
+        dispose();
+
     }
+    else if(ae.getSource() == pdfBtn) {
+
+        generatePDF();
+    }
+}
+    private void generatePDF() {
+
+    try {
+
+        Document document = new Document();
+
+        PdfWriter.getInstance(
+            document,
+            new java.io.FileOutputStream(
+                "MiniStatement_" + cardno + ".pdf"
+            )
+        );
+
+        document.open();
+
+        document.add(new Paragraph("MINI STATEMENT"));
+        document.add(new Paragraph(" "));
+        document.add(new Paragraph("CARD NUMBER : " + cardno));
+        document.add(new Paragraph(" "));
+        document.add(new Paragraph(statement.getText()));
+
+        document.close();
+
+        JOptionPane.showMessageDialog(
+            this,
+            "PDF Generated Successfully"
+        );
+
+    }
+    catch(Exception e) {
+        e.printStackTrace();
+    }
+}
+
+
 }

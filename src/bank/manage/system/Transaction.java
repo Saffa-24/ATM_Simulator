@@ -3,10 +3,12 @@ package bank.manage.system;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 public class Transaction extends JFrame implements ActionListener {
 
-    JButton Deposit,FastCash,PinChange,Withdrawl,MiniStmt,Balance,Exit;
+    JButton Deposit,FastCash,Delete,Withdrawl,MiniStmt,Balance,Exit;
     JLabel enter;
     String cardno;
 
@@ -44,10 +46,10 @@ public class Transaction extends JFrame implements ActionListener {
         FastCash.addActionListener(this);
 
 
-        PinChange=new JButton("Change");
-        PinChange.setBounds(150,400,100,20);
-        PinChange.setFont(new Font("Arial", Font.BOLD, 13));
-        PinChange.addActionListener(this);
+        Delete =new JButton("Delete");
+        Delete.setBounds(150,400,100,20);
+        Delete.setFont(new Font("Arial", Font.BOLD, 13));
+        Delete.addActionListener(this);
 
         Withdrawl=new JButton("Withdrawl");
         Withdrawl.setBounds(300,400,100,20);
@@ -73,7 +75,7 @@ public class Transaction extends JFrame implements ActionListener {
         add(Exit);
         add(Withdrawl);
         add(FastCash);
-        add(PinChange);
+        add(Delete);
         add(MiniStmt);
         add(Balance);
         add(Deposit);
@@ -113,11 +115,106 @@ public class Transaction extends JFrame implements ActionListener {
             new Balance(cardno);
             dispose();
         }
-        
-    
-        else if(ae.getSource()==PinChange)
+        else if(ae.getSource()==Delete)
         {
-            JOptionPane.showMessageDialog(this, "PIN Change page will come soon ");
+            int choice = JOptionPane.showConfirmDialog(
+                this,
+                "Are you sure you want to delete this account permanently?",
+                "Delete Account",
+                JOptionPane.YES_NO_OPTION
+            );
+
+            if(choice == JOptionPane.YES_OPTION)
+            {
+                try
+                {
+                     DBConnection conn = new DBConnection();
+                     Connection c = conn.con;
+
+                    String formno = "";
+
+                    PreparedStatement ps =
+                        c.prepareStatement(
+                            "SELECT FORMNO FROM ACCOUNT_DETAILS WHERE CARD_NUMBER=?"
+                        );
+
+                    ps.setString(1, cardno);
+
+                    ResultSet rs = ps.executeQuery();
+
+                    if(rs.next())
+                    {
+                        formno = rs.getString("FORMNO");
+                    }
+                    PreparedStatement ps1 =
+                     c.prepareStatement(
+                     "DELETE FROM TRANSACTIONS WHERE CARD_NUMBER=?"
+                     );
+
+                    ps1.setString(1, cardno);
+                    ps1.executeUpdate();
+
+                     PreparedStatement ps2 =
+                        c.prepareStatement(
+                            "DELETE FROM ACCOUNT_DETAILS WHERE CARD_NUMBER=?"
+                        );
+
+                    ps2.setString(1, cardno);
+                    ps2.executeUpdate();
+
+                    PreparedStatement ps3 =
+                        c.prepareStatement(
+                            "DELETE FROM ADDITIONAL_DETAILS WHERE FORMNO=?"
+                        );
+
+                    ps3.setString(1, formno);
+                    ps3.executeUpdate();
+                                        
+                    PreparedStatement ps4 =
+                    c.prepareStatement(
+                     "DELETE FROM SIGNUP WHERE FORMNO=?"
+                     );
+
+                    ps4.setString(1, formno);
+
+                    int result = ps4.executeUpdate();
+
+                    
+
+
+                    
+                    
+
+                    if(result > 0)
+                    {
+                        JOptionPane.showMessageDialog(
+                            this,
+                            "Account Deleted Successfully"
+                        );
+
+                        dispose();
+                        new Login();
+                    }
+                    else
+                    {
+                        JOptionPane.showMessageDialog(
+                            this,
+                            "Account Not Found"
+                        );
+                    }
+
+                    ps1.close();
+                    ps2.close();
+                    ps3.close();
+                    ps4.close();
+                    c.close();
+                }
+                catch(Exception e)
+                {
+                    e.printStackTrace();
+                    JOptionPane.showMessageDialog(this, e.getMessage());
+                }
+            }
         }
         else if(ae.getSource()==MiniStmt)
         {

@@ -5,12 +5,13 @@ import java.awt.*;
 import javax.swing.*;
 
 import java.awt.event.*;
+import java.sql.PreparedStatement;
 
 public class Deposit extends JFrame implements ActionListener {
     JLabel EnterLabel;
     JTextField Amount;
     JButton Deposit,Back;
-    int amt=0;
+    int amt=0,balamt=0;
     String card_no;
 
     public Deposit(String Card_no)
@@ -43,6 +44,10 @@ public class Deposit extends JFrame implements ActionListener {
         Deposit.addActionListener(this);
         label.add(Deposit);
 
+
+
+
+
         Back=new JButton("Back");
         Back.setBounds(350,450,100,30);
         Back.addActionListener(this);
@@ -59,22 +64,19 @@ public class Deposit extends JFrame implements ActionListener {
             try{
                amt = Integer.parseInt(Amount.getText());
                DBConnection con=new DBConnection();
-                 String createTable =
-                        "CREATE TABLE IF NOT EXISTS TRANSACTIONS (" +
-                        "ID INTEGER PRIMARY KEY AUTOINCREMENT," +
-                        "CARD_NUMBER VARCHAR(30)," +
-                        "USE_TYPE VARCHAR(20)," +
-                        "AMOUNT INTEGER," +
-                        "DATE_TIME VARCHAR(50)" +
-                        ")";
-                System.out.println("Transaction Created");
-                con.s.executeUpdate(createTable);
-                String query =
-                    "INSERT INTO TRANSACTIONS " +
-                    "(CARD_NUMBER,USE_TYPE,AMOUNT,DATE_TIME) " +
-                    "VALUES('" +
-                    card_no + "','Deposit'," +
-                    amt + ",datetime('now'))";
+               String selectSQL = "SELECT BALANCE FROM TRANSACTIONS WHERE CARD_NUMBER='" + card_no + "'";
+               java.sql.ResultSet rs = con.s.executeQuery(selectSQL);
+               if (rs.next()) {
+                   balamt = rs.getInt("BALANCE");
+               }
+               balamt += amt;
+               String query =
+                   "INSERT INTO TRANSACTIONS " +
+                   "(CARD_NUMBER,USE_TYPE,AMOUNT,DATE_TIME,BALANCE) " +
+                   "VALUES('" +
+                   card_no + "','Deposit'," +
+                   amt + ",datetime('now')," +
+                   balamt + ")";
                     JOptionPane.showMessageDialog(this, "The "+amt+" is deposited");
 
                 con.s.executeUpdate(query);
@@ -84,11 +86,20 @@ public class Deposit extends JFrame implements ActionListener {
                 e.printStackTrace();
                 JOptionPane.showMessageDialog(this ,e);
             }
+                 new Balance(card_no);
+                   dispose();
         }
         else if (ae.getSource()==Back)
-         {
+        {
             new Transaction(card_no);
             dispose();
         }
     }
+
+      public static void main(String []args)
+    {
+       new Deposit("504093198047526824");
+    }
 }
+
+
